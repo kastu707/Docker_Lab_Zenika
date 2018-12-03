@@ -7,4 +7,4 @@ COPY . /app
 RUN pip install -r /app/requirements.txt
 
 # Run the web app as the main process
-CMD ["python", "/app/app3.py"]
+CMD ["python", "/app/app2.py"]
