@@ -1,0 +1,25 @@
+PART ONE: 
+#update repos
+sudo apt-get update
+#scripted installation of Docker
+curl -sSL https://get.docker.com | sh
+#pip installation
+sudo apt-get install python-pip
+#installation of Docker-compose
+sudo pip install docker-compose
+#create a Dockerfile and a requierements.txt file
+#pull the redis image from Docker Hub
+sudo docker pull redis:alpine
+#build the docker image of app1 (need to be in the dir where the Dockerfile is)
+sudo docker build --tag docker-exo1 . 
+#run Docker compose on Detached mode (background) 
+sudo docker-compose up -d 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+PART TWO:
+
+gcloud container clusters create cluster-1 --num-nodes 3 --machine-type g1-small
+kubectl run docker-exo --image=gcr.io/${PROJECT_ID}/docker-exo:v2 --port 8000
+kubectl expose deployment docker-exo --type=LoadBalancer --port 80 --target-port 8000
+kubectl run redis --image=redis --port=6379 --replicas=1 --labels="name=redis,tier=backend,app=docker-exo"
+kubectl expose deployment redis --type=ClusterIP
+kubectl run docker-exo --image=gcr.io/${PROJECT_ID}/docker-exo:v2 --port 8000 --env="REDIS_HOST=redis" --labels="name=docker-exo,tier=backend,app=docker-exo"

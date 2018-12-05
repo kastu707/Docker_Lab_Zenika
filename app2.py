@@ -5,6 +5,8 @@ app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
 
 @app.route('/')
+def givenamou():
+	return 'Please type a name after localhost:8000.\n'
 @app.route('/<name>')
 def hello(name):
     count = redis.incr('hits')
